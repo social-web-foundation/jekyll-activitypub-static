@@ -143,4 +143,4 @@ PRs accepted.
 
 ## License
 
-Apache 2.0 (c) 2025 Social Web Foundation
+LGPL-3.0-or-later (c) 2025 Social Web Foundation
