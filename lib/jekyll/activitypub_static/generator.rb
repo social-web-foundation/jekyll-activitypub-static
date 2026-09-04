@@ -108,6 +108,11 @@ module Jekyll
             "content" => post.content,
             "published" => post.date.iso8601,
             "attributedTo" => "#{url}/actor.jsonld",
+            "url" => {
+              "type" => "Link",
+              "mediaType" => "text/html",
+              "href" => "#{url}#{post.url}"
+            },
             "to" => "as:Public"
           }
 

@@ -87,6 +87,13 @@ class TestActivityPubStaticGenerator < Minitest::Test
       assert_kind_of String, post["content"], "Expected rendered content for #{slug}"
       refute_empty post["content"], "Expected rendered content for #{slug}"
       assert_includes post["content"], "<p>", "Expected rendered HTML content for #{slug}"
+      assert_equal({
+        "type" => "Link",
+        "mediaType" => "text/html",
+        "href" => "https://example.com#{activity_post_url(path)}"
+      }, post["url"],
+                   "Expected Article URL to link to HTML post for #{slug}"
+      )
       refute_includes post["content"], "Fixture layout header",
                       "Expected Article content to exclude layout header for #{slug}"
       refute_includes post["content"], "Fixture layout footer",
@@ -118,5 +125,14 @@ class TestActivityPubStaticGenerator < Minitest::Test
 
     first_item = first_page["orderedItems"].first
     assert first_item["id"].include?("/activitypub/activities/"), "Expected item to reference an activity"
+  end
+
+  private
+
+  def activity_post_url(path)
+    filename = File.basename(path, ".md")
+    year, month, day, slug = filename.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/).captures
+
+    "/#{year}/#{month}/#{day}/#{slug}.html"
   end
 end
