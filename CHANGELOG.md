@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `url` property in Actor objects, to link to the site home page.
 - `page.activitypub_url` for the site index, to link the home page to its ActivityPub Actor object.
 - `webfinger` property in Actor objects, with FEP-2c59 context.
+- `updateInterval` property in Actor objects, with configurable polling interval.
 
 ## [0.7.6] - 2026-09-04
 

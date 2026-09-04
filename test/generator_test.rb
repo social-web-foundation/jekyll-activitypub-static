@@ -22,6 +22,7 @@ class TestActivityPubStaticGenerator < Minitest::Test
     assert_equal "Person", data["type"]
     assert_equal "evanp", data["preferredUsername"]
     assert_equal "evanp@example.com", data["webfinger"]
+    assert_equal "P1D", data["updateInterval"]
     assert_equal "Evan Prodromou", data["name"]
     assert_equal({
                    "type" => "Link",
@@ -30,6 +31,24 @@ class TestActivityPubStaticGenerator < Minitest::Test
                  }, data["url"])
     assert_equal "https://example.com/activitypub/outbox.jsonld", data["outbox"]
     assert_equal "https://example.com/activitypub/inbox.jsonld", data["inbox"]
+  end
+
+  def test_actor_update_interval_is_configurable
+    destination = File.expand_path("../tmp/_site_update_interval", __FILE__)
+    process_site(
+      destination: destination,
+      config: {
+        "activitypub" => {
+          "output_path" => "activitypub",
+          "preferred_username" => "evanp",
+          "update_interval" => "PT6H"
+        }
+      }
+    )
+
+    data = activitypub_actor(destination: destination)
+
+    assert_equal "PT6H", data["updateInterval"]
   end
 
   def test_webfinger_file_generated
@@ -262,6 +281,12 @@ class TestActivityPubStaticGenerator < Minitest::Test
 
   def activitypub_post(slug, destination: DEST_DIR)
     path = File.join(destination, "activitypub", "posts", "#{slug}.jsonld")
+
+    JSON.parse(File.read(path))
+  end
+
+  def activitypub_actor(destination: DEST_DIR)
+    path = File.join(destination, "actor.jsonld")
 
     JSON.parse(File.read(path))
   end

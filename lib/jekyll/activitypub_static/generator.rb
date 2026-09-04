@@ -224,6 +224,7 @@ module Jekyll
         url  = site.config["url"]
         summary = site.config["description"]
         output_path = site.config.dig("activitypub", "output_path") || "activitypub"
+        update_interval = site.config.dig("activitypub", "update_interval") || "P1D"
 
         {
           "@context": [
@@ -235,6 +236,7 @@ module Jekyll
           "type": "Person",
           "id": "#{url}/actor.jsonld",
           "pollOnly": true,
+          "updateInterval": update_interval,
           "name": name(site),
           "preferredUsername": preferred_username(site),
           "summary": (summary unless summary.to_s.strip.empty?),

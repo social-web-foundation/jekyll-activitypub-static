@@ -41,6 +41,7 @@ activitypub:
   preferred_username: "example"
   summary_property: "description"
   note_max_characters: 500
+  update_interval: "P1D"
 ```
 
 Available `activitypub` options:
@@ -55,6 +56,8 @@ Available `activitypub` options:
   the plugin uses the rendered post excerpt.
 - `note_max_characters`: maximum plain-text character count for generated
   Note objects. Defaults to `500`.
+- `update_interval`: ActivityPoll polling interval for the generated Actor
+  object, as an ISO 8601 duration. Defaults to `P1D`.
 
 ## Articles and Notes
 
