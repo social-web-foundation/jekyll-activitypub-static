@@ -1,6 +1,6 @@
 # jekyll-activitypub-static
 
-This is a plugin for Jekyll to generate a static ActivityPoll feed, the read-only polling subset of ActivityPub defined by FEP-b06c.
+A Jekyll plugin that generates a static ActivityPoll feed, the read-only polling subset of ActivityPub defined by FEP-b06c.
 
 ## Install
 

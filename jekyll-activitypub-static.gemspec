@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Evan Prodromou"]
   spec.email         = ["evanp@socialwebfoundation.org"]
 
-  spec.summary       = "Generate a static ActivityPoll feed from your Jekyll site."
-  spec.description   = "A Jekyll plugin that outputs JSON-LD ActivityPoll content for posts, feeds, and actors."
+  spec.summary       = "A Jekyll plugin that generates a static ActivityPoll feed, the read-only polling subset of ActivityPub defined by FEP-b06c."
+  spec.description   = "A Jekyll plugin that generates a static ActivityPoll feed, the read-only polling subset of ActivityPub defined by FEP-b06c."
   spec.homepage      = "https://github.com/social-web-foundation/jekyll-activitypub-static"
   spec.license       = "MIT"
 

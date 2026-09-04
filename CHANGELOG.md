@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Clarified the README and gem metadata description of ActivityPoll.
+
 ### Fixed
 
 - Register generated ActivityPub files as Jekyll static files so they survive cleanup. Thanks to [Paul Roub](https://github.com/paulroub) in [#1](https://github.com/social-web-foundation/jekyll-activitypub-static/pull/1).
