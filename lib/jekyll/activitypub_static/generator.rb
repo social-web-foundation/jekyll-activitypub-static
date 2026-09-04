@@ -242,6 +242,11 @@ module Jekyll
           "inbox": "#{url}/#{output_path}/inbox.jsonld",
           "outbox": "#{url}/#{output_path}/outbox.jsonld",
           "attributedTo": "#{url}/actor.jsonld",
+          "url" => {
+            "type" => "Link",
+            "mediaType" => "text/html",
+            "href" => homepage_url(site)
+          },
           "cc": "as:Public"
         }
       end
@@ -322,6 +327,11 @@ module Jekyll
 
       def plain_text(content)
         content.gsub(/<[^>]*>/, "")
+      end
+
+      def homepage_url(site)
+        url = site.config["url"]
+        url.end_with?("/") ? url : "#{url}/"
       end
     end
   end

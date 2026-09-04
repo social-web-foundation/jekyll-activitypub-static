@@ -21,6 +21,11 @@ class TestActivityPubStaticGenerator < Minitest::Test
     assert_equal "Person", data["type"]
     assert_equal "evanp", data["preferredUsername"]
     assert_equal "Evan Prodromou", data["name"]
+    assert_equal({
+                   "type" => "Link",
+                   "mediaType" => "text/html",
+                   "href" => "https://example.com/"
+                 }, data["url"])
     assert_equal "https://example.com/activitypub/outbox.jsonld", data["outbox"]
     assert_equal "https://example.com/activitypub/inbox.jsonld", data["inbox"]
   end
