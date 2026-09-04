@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-09-04
+
 ### Changed
 
 - Relicensed the project under LGPL-3.0-or-later.
@@ -136,7 +138,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added initial gem scaffolding.
 - Added a minimal example site.
 
-[Unreleased]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.6...v0.8.0
 [0.7.6]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.5...v0.7.6
 [0.7.5]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.4...v0.7.5
