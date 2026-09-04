@@ -10,12 +10,7 @@ class TestActivityPubStaticGenerator < Minitest::Test
   DEST_DIR = File.expand_path("../tmp/_site", __FILE__)
 
   def setup
-    config = {
-      "source" => File.expand_path("fixtures", __dir__),
-      "destination" => DEST_DIR
-    }
-
-    Jekyll::Site.new(Jekyll.configuration(config)).process
+    process_site
   end
 
   def test_actor_file_generated
@@ -151,7 +146,52 @@ class TestActivityPubStaticGenerator < Minitest::Test
     end
   end
 
+  def test_article_summary_uses_description_by_default
+    post = activitypub_post("hello-fediverse")
+
+    assert_equal "A fixture post with an explicit description.", post["summary"]
+  end
+
+  def test_article_summary_falls_back_to_rendered_excerpt
+    post = activitypub_post("happy-birthday")
+
+    assert_equal "<p>Happy birthday to me.</p>\n", post["summary"]
+  end
+
+  def test_article_summary_property_is_configurable
+    destination = File.expand_path("../tmp/_site_summary_property", __FILE__)
+    process_site(
+      destination: destination,
+      config: {
+        "activitypub" => {
+          "output_path" => "activitypub",
+          "preferred_username" => "evanp",
+          "summary_property" => "summary"
+        }
+      }
+    )
+
+    post = activitypub_post("happy-birthday", destination: destination)
+
+    assert_equal "A fixture post with an explicit summary.", post["summary"]
+  end
+
   private
+
+  def process_site(destination: DEST_DIR, config: {})
+    site_config = {
+      "source" => File.expand_path("fixtures", __dir__),
+      "destination" => destination
+    }.merge(config)
+
+    Jekyll::Site.new(Jekyll.configuration(site_config)).process
+  end
+
+  def activitypub_post(slug, destination: DEST_DIR)
+    path = File.join(destination, "activitypub", "posts", "#{slug}.jsonld")
+
+    JSON.parse(File.read(path))
+  end
 
   def activity_post_url(path)
     filename = File.basename(path, ".md")

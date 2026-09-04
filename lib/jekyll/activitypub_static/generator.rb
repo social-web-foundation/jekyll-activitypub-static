@@ -106,6 +106,7 @@ module Jekyll
             "type" => "Article",
             "name" => post.data["title"],
             "content" => post.content,
+            "summary" => article_summary(site, post),
             "published" => post.date.iso8601,
             "attributedTo" => "#{url}/actor.jsonld",
             "url" => {
@@ -280,6 +281,15 @@ module Jekyll
 
         page["prev"] = "#{url}/#{output_path}/outbox/page-#{page_number - 1}.jsonld" if page_number > 1
         page
+      end
+
+      def article_summary(site, post)
+        property = site.config.dig("activitypub", "summary_property") || "description"
+        explicit = post.data[property]
+        return explicit unless explicit.to_s.strip.empty?
+
+        excerpt = post.data["excerpt"]
+        excerpt.output
       end
     end
   end
