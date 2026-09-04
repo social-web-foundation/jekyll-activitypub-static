@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.3] - 2026-09-04
+
+### Fixed
+
+- Pin `.ruby-version` to Ruby 3.4.10 so rbenv can select the project Ruby version.
+
+## [0.7.2] - 2026-09-04
+
 ### Changed
 
 - Clarified the README and gem metadata description of ActivityPoll.
@@ -89,7 +97,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added initial gem scaffolding.
 - Added a minimal example site.
 
-[Unreleased]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.1...HEAD
+[Unreleased]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.3...HEAD
+[0.7.3]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.2...v0.7.3
+[0.7.2]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.1...v0.7.2
 [0.7.1]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.7.0...v0.7.1
 [0.7.0]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/social-web-foundation/jekyll-activitypub-static/compare/v0.5.0...v0.6.0
