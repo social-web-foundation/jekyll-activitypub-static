@@ -8,3 +8,11 @@ plugins:
 activitypub:
   output_path: "activitypub"
   preferred_username: "evanp"
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

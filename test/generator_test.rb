@@ -87,6 +87,9 @@ class TestActivityPubStaticGenerator < Minitest::Test
       assert_kind_of String, post["content"], "Expected rendered content for #{slug}"
       refute_empty post["content"], "Expected rendered content for #{slug}"
       assert_includes post["content"], "<p>", "Expected rendered HTML content for #{slug}"
+      refute_includes post["content"], "Fixture layout header", "Expected Article content to exclude layout header for #{slug}"
+      refute_includes post["content"], "Fixture layout footer", "Expected Article content to exclude layout footer for #{slug}"
+      refute_includes post["content"], "<html>", "Expected Article content to exclude full document output for #{slug}"
       assert_equal "Create", activity["type"], "Expected type: Create for #{slug}"
       assert_equal post["id"], activity["object"]["id"], "Create.object should match Article ID for #{slug}"
     end

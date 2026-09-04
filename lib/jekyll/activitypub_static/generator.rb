@@ -105,7 +105,7 @@ module Jekyll
             "id" => article_id,
             "type" => "Article",
             "name" => post.data["title"],
-            "content" => post.output,
+            "content" => post.content,
             "published" => post.date.iso8601,
             "attributedTo" => "#{url}/actor.jsonld",
             "to" => "as:Public"
