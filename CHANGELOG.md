@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `url` property in Article objects, to link to HTML post document.
 - `page.activitypub_url` for post layouts, to link HTML posts to their ActivityPub Article objects.
 - `summary` property in Article objects, using a configurable post property with rendered excerpt fallback.
+- Note object generation for short, untitled posts, with configurable character limit.
 
 ## [0.7.6] - 2026-09-04
 

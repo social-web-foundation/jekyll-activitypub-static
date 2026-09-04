@@ -78,7 +78,7 @@ class TestActivityPubStaticGenerator < Minitest::Test
       post = JSON.parse(File.read(post_path))
       activity = JSON.parse(File.read(activity_path))
 
-      assert_equal "Article", post["type"], "Expected type: Article for #{slug}"
+      assert_includes %w[Article Note], post["type"], "Expected ActivityStreams object type for #{slug}"
       assert_kind_of String, post["content"], "Expected rendered content for #{slug}"
       refute_empty post["content"], "Expected rendered content for #{slug}"
       assert_includes post["content"], "<p>", "Expected rendered HTML content for #{slug}"
@@ -94,7 +94,8 @@ class TestActivityPubStaticGenerator < Minitest::Test
                       "Expected Article content to exclude layout footer for #{slug}"
       refute_includes post["content"], "<html>", "Expected Article content to exclude full document output for #{slug}"
       assert_equal "Create", activity["type"], "Expected type: Create for #{slug}"
-      assert_equal post["id"], activity["object"]["id"], "Create.object should match Article ID for #{slug}"
+      assert_equal post["id"], activity["object"]["id"], "Create.object should match object ID for #{slug}"
+      assert_equal post["type"], activity["object"]["type"], "Create.object should match object type for #{slug}"
     end
   end
 
@@ -174,6 +175,55 @@ class TestActivityPubStaticGenerator < Minitest::Test
     post = activitypub_post("happy-birthday", destination: destination)
 
     assert_equal "A fixture post with an explicit summary.", post["summary"]
+  end
+
+  def test_short_untitled_post_without_summary_is_note
+    post = activitypub_post("short-note")
+
+    assert_equal "Note", post["type"]
+    refute post.key?("name"), "Expected Note to omit name"
+  end
+
+  def test_titled_short_post_is_article
+    post = activitypub_post("hello-fediverse")
+
+    assert_equal "Article", post["type"]
+  end
+
+  def test_untitled_post_with_summary_is_article
+    post = activitypub_post("untitled-with-description")
+
+    assert_equal "Article", post["type"]
+  end
+
+  def test_untitled_post_with_multiple_paragraphs_is_article
+    post = activitypub_post("untitled-two-paragraphs")
+
+    assert_equal "Article", post["type"]
+  end
+
+  def test_untitled_post_over_default_note_limit_is_article
+    post = activitypub_post("untitled-long-post")
+
+    assert_equal "Article", post["type"]
+  end
+
+  def test_note_character_limit_is_configurable
+    destination = File.expand_path("../tmp/_site_note_character_limit", __FILE__)
+    process_site(
+      destination: destination,
+      config: {
+        "activitypub" => {
+          "output_path" => "activitypub",
+          "preferred_username" => "evanp",
+          "note_max_characters" => 650
+        }
+      }
+    )
+
+    post = activitypub_post("untitled-long-post", destination: destination)
+
+    assert_equal "Note", post["type"]
   end
 
   private

@@ -40,6 +40,7 @@ activitypub:
   output_path: "activitypub"
   preferred_username: "example"
   summary_property: "description"
+  note_max_characters: 500
 ```
 
 Available `activitypub` options:
@@ -52,6 +53,32 @@ Available `activitypub` options:
 - `summary_property`: post front matter property to use for generated Article
   summaries. Defaults to `description`; when the property is missing or empty,
   the plugin uses the rendered post excerpt.
+- `note_max_characters`: maximum plain-text character count for generated
+  Note objects. Defaults to `500`.
+
+## Articles and Notes
+
+Posts are generated as Activity Streams `Article` objects by default.
+
+Short, untitled posts without an explicit summary are generated as
+Activity Streams `Note` objects. `Note` is the native Activity Streams object
+type used by Mastodon for statuses. To make a post eligible for `Note`
+generation, set an explicit blank title:
+
+```yaml
+---
+title: ""
+---
+```
+
+Jekyll generates titles from post filenames when `title` is omitted, so an
+omitted title is treated as a normal title. A blank-titled post is generated as
+a `Note` when it has no configured summary property, has one rendered paragraph,
+and its plain-text content is no longer than `activitypub.note_max_characters`.
+
+Blank-titled posts may need layout support on home pages, archive pages, or
+post lists. Use the excerpt, date, or another fallback when displaying links to
+untitled posts.
 
 ## Post Layouts
 

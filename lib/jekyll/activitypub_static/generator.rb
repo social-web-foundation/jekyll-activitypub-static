@@ -30,9 +30,6 @@ module Jekyll
         generate_webfinger(site)
         generate_actor(site)
         generate_inbox(site)
-        generate_activities(site)
-        generate_outbox_pages(site)
-        generate_outbox(site)
       end
 
       def generate_webfinger(site)
@@ -103,8 +100,7 @@ module Jekyll
           article = {
             "@context" => "https://www.w3.org/ns/activitystreams",
             "id" => article_id,
-            "type" => "Article",
-            "name" => post.data["title"],
+            "type" => post_type(site, post),
             "content" => post.content,
             "summary" => article_summary(site, post),
             "published" => post.date.iso8601,
@@ -116,6 +112,8 @@ module Jekyll
             },
             "to" => "as:Public"
           }
+
+          article["name"] = post.data["title"] unless post.data["title"].to_s.strip.empty?
 
           site.static_files << JsonStaticFile.new(site, output_dir, filename, article)
         end
@@ -143,11 +141,12 @@ module Jekyll
             "published" => post.date.iso8601,
             "object" => {
               "id" => article_id,
-              "type" => "Article",
-              "name" => post.data["title"]
+              "type" => post_type(site, post)
             },
             "to" => "as:Public"
           }
+
+          activity["object"]["name"] = post.data["title"] unless post.data["title"].to_s.strip.empty?
 
           site.static_files << JsonStaticFile.new(site, output_dir, filename, activity)
           Jekyll.logger.info LOG_TAG, "Wrote activity to #{path}"
@@ -291,12 +290,50 @@ module Jekyll
         excerpt = post.data["excerpt"]
         excerpt.output
       end
+
+      def note?(site, post)
+        title = post.data["title"]
+        return false unless title.to_s.strip.empty?
+
+        summary = explicit_summary(site, post)
+        return false unless summary.to_s.strip.empty?
+
+        return false unless paragraph_count(post.content) == 1
+
+        plain_text(post.content).length <= note_max_characters(site)
+      end
+
+      def post_type(site, post)
+        note?(site, post) ? "Note" : "Article"
+      end
+
+      def explicit_summary(site, post)
+        property = site.config.dig("activitypub", "summary_property") || "description"
+        post.data[property]
+      end
+
+      def note_max_characters(site)
+        site.config.dig("activitypub", "note_max_characters") || 500
+      end
+
+      def paragraph_count(content)
+        content.scan(/<p\b[^>]*>/).length
+      end
+
+      def plain_text(content)
+        content.gsub(/<[^>]*>/, "")
+      end
     end
   end
 end
 
 Jekyll::Hooks.register :site, :post_render do |site|
-  Jekyll::ActivityPubStatic::Generator.new(site.config).generate_articles(site)
+  generator = Jekyll::ActivityPubStatic::Generator.new(site.config)
+
+  generator.generate_articles(site)
+  generator.generate_activities(site)
+  generator.generate_outbox_pages(site)
+  generator.generate_outbox(site)
 end
 
 Jekyll::Hooks.register :posts, :pre_render do |post|
