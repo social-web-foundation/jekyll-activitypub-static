@@ -353,3 +353,10 @@ Jekyll::Hooks.register :posts, :pre_render do |post|
   slug = post.basename_without_ext.sub(/^\d{4}-\d{2}-\d{2}-/, "")
   post.data["activitypub_url"] = "#{url}/#{output_path}/posts/#{slug}.jsonld"
 end
+
+Jekyll::Hooks.register :pages, :post_init do |page|
+  next unless page.url == "/"
+
+  site = page.site
+  page.data["activitypub_url"] = "#{site.config["url"]}/actor.jsonld"
+end

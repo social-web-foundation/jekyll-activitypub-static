@@ -152,6 +152,22 @@ class TestActivityPubStaticGenerator < Minitest::Test
     end
   end
 
+  def test_site_index_links_to_activitypub_actor
+    path = File.join(DEST_DIR, "index.html")
+    expected_href = "https://example.com/actor.jsonld"
+
+    assert File.exist?(path), "Expected site index file at #{path}"
+
+    html = File.read(path)
+    link = html.scan(/<link\b[^>]*>/).find do |tag|
+      html_attribute(tag, "rel") == "alternate" &&
+        html_attribute(tag, "type") == "application/activity+json" &&
+        html_attribute(tag, "href") == expected_href
+    end
+
+    assert link, "Expected site index to link to #{expected_href}"
+  end
+
   def test_article_summary_uses_description_by_default
     post = activitypub_post("hello-fediverse")
 

@@ -80,10 +80,10 @@ Blank-titled posts may need layout support on home pages, archive pages, or
 post lists. Use the excerpt, date, or another fallback when displaying links to
 untitled posts.
 
-## Post Layouts
+## Layouts
 
-To link from each HTML post to its ActivityPub representation, add this to
-the `<head>` element of your post layout:
+To link from HTML pages to their ActivityPub representation, add this to the
+`<head>` element of your layouts:
 
 ```html
 {% if page.activitypub_url %}
@@ -91,8 +91,9 @@ the `<head>` element of your post layout:
 {% endif %}
 ```
 
-The plugin sets `page.activitypub_url` for posts before they render. The URL
-points to the generated JSON-LD Article object for the post.
+The plugin sets `page.activitypub_url` before rendering posts and the site
+index. For posts, the URL points to the generated JSON-LD Article or Note
+object. For the site index, the URL points to the generated Actor object.
 
 ## Generated Files
 

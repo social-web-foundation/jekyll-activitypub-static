@@ -1,0 +1,14 @@
+---
+---
+<!doctype html>
+<html>
+  <head>
+    <title>{{ site.title }}</title>
+    {% if page.activitypub_url %}
+      <link rel="alternate" type="application/activity+json" href="{{ page.activitypub_url }}">
+    {% endif %}
+  </head>
+  <body>
+    <h1>{{ site.title }}</h1>
+  </body>
+</html>
