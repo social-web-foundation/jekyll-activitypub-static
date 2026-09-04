@@ -36,12 +36,10 @@ module Jekyll
         Jekyll.logger.info LOG_TAG, "Generating .well-known/webfinger"
 
         url = site.config["url"]
-        host = URI(url).host
-        username = preferred_username(site)
         actor_url = "#{url}/actor.jsonld"
 
         webfinger = {
-          "subject" => "acct:#{username}@#{host}",
+          "subject" => "acct:#{webfinger_address(site)}",
           "links" => [
             {
               "rel" => "self",
@@ -231,6 +229,7 @@ module Jekyll
           "@context": [
             "https://www.w3.org/ns/activitystreams",
             "https://purl.archive.org/miscellany/1.0",
+            "https://purl.archive.org/socialweb/webfinger",
             "https://w3id.org/fep/b06c"
           ],
           "type": "Person",
@@ -247,6 +246,7 @@ module Jekyll
             "mediaType" => "text/html",
             "href" => homepage_url(site)
           },
+          "webfinger" => webfinger_address(site),
           "cc": "as:Public"
         }
       end
@@ -332,6 +332,12 @@ module Jekyll
       def homepage_url(site)
         url = site.config["url"]
         url.end_with?("/") ? url : "#{url}/"
+      end
+
+      def webfinger_address(site)
+        url = site.config["url"]
+        host = URI(url).host
+        "#{preferred_username(site)}@#{host}"
       end
     end
   end

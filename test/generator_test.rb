@@ -18,8 +18,10 @@ class TestActivityPubStaticGenerator < Minitest::Test
     assert File.exist?(path), "Expected actor.jsonld to be generated"
 
     data = JSON.parse(File.read(path))
+    assert_includes data["@context"], "https://purl.archive.org/socialweb/webfinger"
     assert_equal "Person", data["type"]
     assert_equal "evanp", data["preferredUsername"]
+    assert_equal "evanp@example.com", data["webfinger"]
     assert_equal "Evan Prodromou", data["name"]
     assert_equal({
                    "type" => "Link",
