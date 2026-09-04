@@ -8,7 +8,7 @@ To build from source:
 
 ```bash
 gem build jekyll-activitypub-static.gemspec
-gem install ./jekyll-activitypub-static-0.6.0.gem
+gem install ./jekyll-activitypub-static-0.7.0.gem
 ```
 
 ## Usage
