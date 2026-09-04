@@ -9,3 +9,8 @@ plugins:
 include:
   - activitypub
   - .well-known
+
+keep_files:
+  - actor.jsonld
+  - activitypub
+  - .well-known

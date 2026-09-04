@@ -1,4 +1,4 @@
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3"
-gem "jekyll-activitypub-static"
+gem "jekyll-activitypub-static", path: ".."
