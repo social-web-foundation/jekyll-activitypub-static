@@ -107,7 +107,7 @@ jobs:
         run: gem install pkg/*.gem
 
       - name: Build example site
-        run: jekyll build --source example-site --destination example-site/_site --trace
+        run: bundle exec jekyll build --source example-site --destination example-site/_site --trace
 
   publish:
     name: Publish gem
