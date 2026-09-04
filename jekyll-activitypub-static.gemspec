@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Generate a static ActivityPoll feed from your Jekyll site."
   spec.description   = "A Jekyll plugin that outputs JSON-LD ActivityPoll content for posts, feeds, and actors."
-  spec.homepage      = "https://github.com/evanp/jekyll-activitypub-static"
+  spec.homepage      = "https://github.com/social-web-foundation/jekyll-activitypub-static"
   spec.license       = "MIT"
 
   spec.files         = Dir["lib/**/*", "README.md", "LICENSE"]
