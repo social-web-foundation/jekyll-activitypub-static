@@ -1,5 +1,11 @@
 require "rake/testtask"
+require "rubocop/rake_task"
 require "bundler/gem_tasks"
+
+# === Lint ===
+RuboCop::RakeTask.new(:lint) do |t|
+  t.options = ["--cache", "false"]
+end
 
 # === Test ===
 Rake::TestTask.new do |t|

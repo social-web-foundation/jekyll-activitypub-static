@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added three posts to the example site: "Hello, World!", "Lorem Ipsum", and "Fable of the Wind and the Sun".
+- Added GitHub Actions automation to run linting and tests on pushes to `main`.
 
 ### Changed
 
