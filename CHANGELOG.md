@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `url` property in Article objects, to link to HTML post document.
+
 ## [0.7.6] - 2026-09-04
 
 ### Fixed
