@@ -84,6 +84,9 @@ class TestActivityPubStaticGenerator < Minitest::Test
       activity = JSON.parse(File.read(activity_path))
 
       assert_equal "Article", post["type"], "Expected type: Article for #{slug}"
+      assert_kind_of String, post["content"], "Expected rendered content for #{slug}"
+      refute_empty post["content"], "Expected rendered content for #{slug}"
+      assert_includes post["content"], "<p>", "Expected rendered HTML content for #{slug}"
       assert_equal "Create", activity["type"], "Expected type: Create for #{slug}"
       assert_equal post["id"], activity["object"]["id"], "Create.object should match Article ID for #{slug}"
     end

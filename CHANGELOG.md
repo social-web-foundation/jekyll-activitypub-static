@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Configure Dependabot to check Bundler dependencies and GitHub Actions weekly with a seven-day cooldown.
 
+### Fixed
+
+- Generate Article objects after Jekyll renders post content.
+
 ## [0.7.3] - 2026-09-04
 
 ### Fixed

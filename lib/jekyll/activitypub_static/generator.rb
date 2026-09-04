@@ -30,7 +30,6 @@ module Jekyll
         generate_webfinger(site)
         generate_actor(site)
         generate_inbox(site)
-        generate_articles(site)
         generate_activities(site)
         generate_outbox_pages(site)
         generate_outbox(site)
@@ -279,4 +278,8 @@ module Jekyll
       end
     end
   end
+end
+
+Jekyll::Hooks.register :site, :post_render do |site|
+  Jekyll::ActivityPubStatic::Generator.new(site.config).generate_articles(site)
 end
