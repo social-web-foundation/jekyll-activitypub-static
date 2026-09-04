@@ -4,6 +4,24 @@ require "uri"
 
 module Jekyll
   module ActivityPubStatic
+    class JsonStaticFile < Jekyll::StaticFile
+      def initialize(site, dir, name, content)
+        super(site, site.source, dir, name)
+        @content = content
+      end
+
+      def modified?
+        true
+      end
+
+      def write(dest)
+        dest_path = destination(dest)
+        FileUtils.mkdir_p(File.dirname(dest_path))
+        File.write(dest_path, JSON.pretty_generate(@content))
+        true
+      end
+    end
+
     class Generator < Jekyll::Generator
       safe true
       priority :low
@@ -37,17 +55,16 @@ module Jekyll
           ]
         }
 
-        path = File.join(site.dest, ".well-known", "webfinger")
-        FileUtils.mkdir_p(File.dirname(path))
-        File.write(path, JSON.pretty_generate(webfinger))
+        sf = JsonStaticFile.new(site, ".well-known", "webfinger", webfinger)
+        site.static_files << sf
+
+        Jekyll.logger.info LOG_TAG, "Added webfinger as #{sf.path}"
       end
 
       def generate_actor(site)
         Jekyll.logger.info LOG_TAG, "Generating actor.jsonld"
         actor = build_actor(site)
-        path = File.join(site.dest, "actor.jsonld")
-        FileUtils.mkdir_p(File.dirname(path))
-        File.write(path, JSON.pretty_generate(actor))
+        site.static_files << JsonStaticFile.new(site, "", "actor.jsonld", actor)
       end
 
       def generate_inbox(site)
@@ -69,21 +86,18 @@ module Jekyll
           "totalItems": 0,
           "orderedItems": []
         }
-        path = File.join(site.dest, output_path, "inbox.jsonld")
-        FileUtils.mkdir_p(File.dirname(path))
-        File.write(path, JSON.pretty_generate(inbox))
+
+        site.static_files << JsonStaticFile.new(site, output_path, "inbox.jsonld", inbox)
       end
 
       def generate_articles(site)
         url = site.config["url"]
         output_path = site.config.dig("activitypub", "output_path") || "activitypub"
-        output_dir = File.join(site.dest, output_path, "posts")
-        FileUtils.mkdir_p(output_dir)
+        output_dir = File.join(output_path, "posts")
 
         site.posts.docs.each do |post|
           slug = post.basename_without_ext.sub(/^\d{4}-\d{2}-\d{2}-/, "")
           filename = "#{slug}.jsonld"
-          path = File.join(output_dir, filename)
 
           article_id = "#{url}/#{output_path}/posts/#{slug}.jsonld"
 
@@ -98,16 +112,14 @@ module Jekyll
             "to" => "as:Public"
           }
 
-          File.write(path, JSON.pretty_generate(article))
-          Jekyll.logger.info LOG_TAG, "Wrote article to #{path}"
+          site.static_files << JsonStaticFile.new(site, output_dir, filename, article)
         end
       end
 
       def generate_activities(site)
         url = site.config["url"]
         output_path = site.config.dig("activitypub", "output_path") || "activitypub"
-        output_dir = File.join(site.dest, output_path, "activities")
-        FileUtils.mkdir_p(output_dir)
+        output_dir = File.join(output_path, "activities")
 
         site.posts.docs.each do |post|
           slug = post.basename_without_ext.sub(/^\d{4}-\d{2}-\d{2}-/, "")
@@ -132,7 +144,7 @@ module Jekyll
             "to" => "as:Public"
           }
 
-          File.write(path, JSON.pretty_generate(activity))
+          site.static_files << JsonStaticFile.new(site, output_dir, filename, activity)
           Jekyll.logger.info LOG_TAG, "Wrote activity to #{path}"
         end
       end
@@ -140,7 +152,7 @@ module Jekyll
       def generate_outbox_pages(site)
         url = site.config["url"]
         output_path = site.config.dig("activitypub", "output_path") || "activitypub"
-        output_dir = File.join(site.dest, output_path, "outbox")
+        output_dir = File.join(output_path, "outbox")
 
         page_number = 1
         page = build_page(site, page_number)
@@ -152,9 +164,7 @@ module Jekyll
           activity_id = "#{url}/#{output_path}/activities/create-#{slug}.jsonld"
 
           if page["orderedItems"].length >= PAGE_SIZE
-            path = File.join(output_dir, "page-#{page_number}.jsonld")
-            FileUtils.mkdir_p(File.dirname(path))
-            File.write(path, JSON.pretty_generate(page))
+            site.static_files << JsonStaticFile.new(site, output_dir, "page-#{page_number}.jsonld", page)
             page_number += 1
             page = build_page(site, page_number)
           end
@@ -175,8 +185,9 @@ module Jekyll
 
         if page["orderedItems"].any?
           path = File.join(output_dir, "page-#{page_number}.jsonld")
-          FileUtils.mkdir_p(File.dirname(path))
-          File.write(path, JSON.pretty_generate(page))
+
+          site.static_files << JsonStaticFile.new(site, output_dir, "page-#{page_number}.jsonld", page)
+          Jekyll.logger.info LOG_TAG, "Wrote outbox page #{page_number} to #{path}"
         end
       end
 
@@ -203,9 +214,8 @@ module Jekyll
           "first": ("#{url}/#{output_path}/outbox/page-#{page_count}.jsonld" if total_items > 0)
         }
 
-        path = File.join(site.dest, output_path, "outbox.jsonld")
-        FileUtils.mkdir_p(File.dirname(path))
-        File.write(path, JSON.pretty_generate(outbox))
+        site.static_files << JsonStaticFile.new(site, output_path, "outbox.jsonld", outbox)
+        Jekyll.logger.info LOG_TAG, "Wrote outbox to #{File.join(site.dest, output_path, "outbox.jsonld")}"
       end
 
       def build_actor(site)
