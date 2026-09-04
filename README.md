@@ -26,6 +26,18 @@ plugins:
   - jekyll-activitypub-static
 ```
 
+To link from each HTML post to its ActivityPub representation, add this to
+the `<head>` element of your post layout:
+
+```html
+{% if page.activitypub_url %}
+  <link rel="alternate" type="application/activity+json" href="{{ page.activitypub_url }}">
+{% endif %}
+```
+
+The plugin sets `page.activitypub_url` for posts before they render. The URL
+points to the generated JSON-LD Article object for the post.
+
 The `example-site` directory has a minimal example site (thus the name). You can build and run it with these commands:
 
 ```sh

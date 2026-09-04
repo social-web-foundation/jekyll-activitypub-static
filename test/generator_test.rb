@@ -88,12 +88,11 @@ class TestActivityPubStaticGenerator < Minitest::Test
       refute_empty post["content"], "Expected rendered content for #{slug}"
       assert_includes post["content"], "<p>", "Expected rendered HTML content for #{slug}"
       assert_equal({
-        "type" => "Link",
-        "mediaType" => "text/html",
-        "href" => "https://example.com#{activity_post_url(path)}"
-      }, post["url"],
-                   "Expected Article URL to link to HTML post for #{slug}"
-      )
+                     "type" => "Link",
+                     "mediaType" => "text/html",
+                     "href" => "https://example.com#{activity_post_url(path)}"
+                   }, post["url"],
+                   "Expected Article URL to link to HTML post for #{slug}")
       refute_includes post["content"], "Fixture layout header",
                       "Expected Article content to exclude layout header for #{slug}"
       refute_includes post["content"], "Fixture layout footer",
@@ -127,6 +126,31 @@ class TestActivityPubStaticGenerator < Minitest::Test
     assert first_item["id"].include?("/activitypub/activities/"), "Expected item to reference an activity"
   end
 
+  def test_post_html_links_to_activitypub_article
+    fixtures_posts_dir = File.expand_path("fixtures/_posts", __dir__)
+    post_filenames = Dir[File.join(fixtures_posts_dir, "*.md")]
+
+    assert post_filenames.any?, "Expected at least one fixture post"
+
+    post_filenames.each do |path|
+      filename = File.basename(path, ".md")
+      slug = filename.sub(/^\d{4}-\d{2}-\d{2}-/, "")
+      html_path = File.join(DEST_DIR, activity_post_url(path))
+      expected_href = "https://example.com/activitypub/posts/#{slug}.jsonld"
+
+      assert File.exist?(html_path), "Expected HTML post file for #{slug} at #{html_path}"
+
+      html = File.read(html_path)
+      link = html.scan(/<link\b[^>]*>/).find do |tag|
+        html_attribute(tag, "rel") == "alternate" &&
+          html_attribute(tag, "type") == "application/activity+json" &&
+          html_attribute(tag, "href") == expected_href
+      end
+
+      assert link, "Expected HTML post for #{slug} to link to #{expected_href}"
+    end
+  end
+
   private
 
   def activity_post_url(path)
@@ -134,5 +158,9 @@ class TestActivityPubStaticGenerator < Minitest::Test
     year, month, day, slug = filename.match(/^(\d{4})-(\d{2})-(\d{2})-(.+)$/).captures
 
     "/#{year}/#{month}/#{day}/#{slug}.html"
+  end
+
+  def html_attribute(tag, name)
+    tag[/\b#{Regexp.escape(name)}=(["'])(.*?)\1/, 2]
   end
 end

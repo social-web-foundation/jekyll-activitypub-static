@@ -14,3 +14,11 @@ keep_files:
   - actor.jsonld
   - activitypub
   - .well-known
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"

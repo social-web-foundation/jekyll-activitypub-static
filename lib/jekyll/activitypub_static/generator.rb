@@ -288,3 +288,11 @@ end
 Jekyll::Hooks.register :site, :post_render do |site|
   Jekyll::ActivityPubStatic::Generator.new(site.config).generate_articles(site)
 end
+
+Jekyll::Hooks.register :posts, :pre_render do |post|
+  site = post.site
+  url = site.config["url"]
+  output_path = site.config.dig("activitypub", "output_path") || "activitypub"
+  slug = post.basename_without_ext.sub(/^\d{4}-\d{2}-\d{2}-/, "")
+  post.data["activitypub_url"] = "#{url}/#{output_path}/posts/#{slug}.jsonld"
+end

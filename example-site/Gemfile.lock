@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    jekyll-activitypub-static (0.6.0)
+    jekyll-activitypub-static (0.7.6)
       jekyll (~> 4.0)
 
 GEM
