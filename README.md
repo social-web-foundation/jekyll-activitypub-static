@@ -1,14 +1,14 @@
-# jekyll-activitypub
+# jekyll-activitypub-static
 
-This is a plugin for Jekyll to generate an ActivityPub feed.
+This is a plugin for Jekyll to generate a static ActivityPoll feed, the read-only polling subset of ActivityPub defined by FEP-b06c.
 
 ## Install
 
 To build from source:
 
 ```bash
-gem build jekyll-activitypub.gemspec
-gem install ./jekyll-activitypub-0.1.0.gem
+gem build jekyll-activitypub-static.gemspec
+gem install ./jekyll-activitypub-static-0.6.0.gem
 ```
 
 ## Usage
@@ -16,14 +16,14 @@ gem install ./jekyll-activitypub-0.1.0.gem
 Add this to the `Gemfile` of your Jekyll site:
 
 ```Gemfile
-gem "jekyll-activitypub"
+gem "jekyll-activitypub-static"
 ```
 
 Then, add this to the `_config.yml` for your site:
 
 ```yaml
 plugins:
-  - jekyll-activitypub
+  - jekyll-activitypub-static
 ```
 
 The `example-site` directory has a minimal example site (thus the name). You can build and run it with these commands:

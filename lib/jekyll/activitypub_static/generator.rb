@@ -1,9 +1,9 @@
-# lib/jekyll/activitypub/generator.rb
+# lib/jekyll/activitypub_static/generator.rb
 require "json"
 require "uri"
 
 module Jekyll
-  module ActivityPub
+  module ActivityPubStatic
     class Generator < Jekyll::Generator
       safe true
       priority :low

@@ -13,11 +13,11 @@ task default: :test
 # === Install locally ===
 desc "Build and install the gem locally"
 task :install do
-  sh "gem build jekyll-activitypub.gemspec"
-  sh "gem install ./jekyll-activitypub-#{version_from_gemspec}.gem"
+  sh "gem build jekyll-activitypub-static.gemspec"
+  sh "gem install ./jekyll-activitypub-static-#{version_from_gemspec}.gem"
 end
 
 # === Helpers ===
 def version_from_gemspec
-  File.read("lib/jekyll/activitypub/version.rb")[/VERSION\s*=\s*["'](.+)["']/, 1]
+  File.read("lib/jekyll/activitypub_static/version.rb")[/VERSION\s*=\s*["'](.+)["']/, 1]
 end

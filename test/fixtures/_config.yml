@@ -1,9 +1,9 @@
 title: Test Site
 url: https://example.com
 author: "Evan Prodromou"
-description: "A test site for the Jekyll ActivityPub plugin"
+description: "A test site for the Jekyll ActivityPub Static plugin"
 plugins:
-  - jekyll-activitypub
+  - jekyll-activitypub-static
 
 activitypub:
   output_path: "activitypub"

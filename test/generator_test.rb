@@ -3,9 +3,9 @@ require "jekyll"
 require "fileutils"
 require "json"
 
-require_relative "../lib/jekyll-activitypub"
+require_relative "../lib/jekyll-activitypub-static"
 
-class TestActivityPubGenerator < Minitest::Test
+class TestActivityPubStaticGenerator < Minitest::Test
 
   DEST_DIR = File.expand_path("../tmp/_site", __FILE__)
 
