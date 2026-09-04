@@ -15,12 +15,7 @@ class TestActivityPubStaticGenerator < Minitest::Test
       "destination" => DEST_DIR
     }
 
-    site = Jekyll::Site.new(Jekyll.configuration(config))
-    site.reset
-    site.read
-    site.generate
-    site.render
-    site.write
+    Jekyll::Site.new(Jekyll.configuration(config)).process
   end
 
   def test_actor_file_generated
