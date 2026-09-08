@@ -10,6 +10,7 @@ A Jekyll plugin that generates a static ActivityPoll feed, the read-only polling
 - [Articles and Notes](#articles-and-notes)
 - [Layouts](#layouts)
 - [Generated Files](#generated-files)
+- [GitHub Pages](#github-pages)
 - [Example Site](#example-site)
 - [Contributing](#contributing)
 - [License](#license)
@@ -163,6 +164,31 @@ WebFinger discovery only works when the generated site is served from the root
 of its domain, because clients request `https://example.com/.well-known/webfinger`.
 Sites served from a subdirectory cannot provide a domain-level WebFinger
 endpoint with this plugin alone.
+
+## GitHub Pages
+
+GitHub Pages' built-in Jekyll build does not support this plugin because it is
+not on GitHub's allowlist. Configure a GitHub Actions workflow to build the
+site instead.
+
+The `.well-known` directory can be dropped when uploading the resulting site to GitHub Pages. To work around this, set `include-hidden-files: true` on the `actions/upload-pages-artifact` step in the GitHub Actions workflow:
+
+```yaml
+- uses: actions/upload-pages-artifact@v5
+  with:
+    path: _site
+    include-hidden-files: true
+```
+
+Configure WebFinger to use an `index.json` file:
+
+```yaml
+activitypub:
+  webfinger_output_file: ".well-known/webfinger/index.json"
+```
+
+The `index.json` path works around GitHub Pages serving the extensionless
+`.well-known/webfinger` file with an `application/octet-stream` content type.
 
 ## Example Site
 

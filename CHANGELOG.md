@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Configurable WebFinger output path with `activitypub.webfinger_output_file`.
+- Documentation on using this with GitHub Pages.
 
 ## [0.9.0] - 2026-09-04
 
