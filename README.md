@@ -203,6 +203,16 @@ bundle exec jekyll serve
 
 This will build a site that runs on `http://localhost:4000/`
 
+## Viewing from the Fediverse
+
+Support for interacting with static accounts on the Fediverse is still experimental; most software will not allow full interactions.
+
+With Mastodon 4.x (the current version) you can search for the account by Webfinger ID (username@domain), and then load the account. It should show the profile information.
+
+With [Webfinger Browser](https://acct.swf.pub/), you can search for the account by Webfinger ID, and view the account. It should show the profile information and all the generated content.
+
+It's still definitely worthwhile to keep this plugin enabled; it gives an incentive for Fediverse software developers to add support for static accounts.
+
 ## Contributing
 
 PRs accepted.
