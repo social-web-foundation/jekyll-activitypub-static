@@ -2,7 +2,19 @@
 
 A Jekyll plugin that generates a static ActivityPoll feed, the read-only polling subset of ActivityPub defined by FEP-b06c.
 
-## Installation
+## Table of Contents
+
+- [Install](#install)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Articles and Notes](#articles-and-notes)
+- [Layouts](#layouts)
+- [Generated Files](#generated-files)
+- [Example Site](#example-site)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Install
 
 Add this to the `Gemfile` of your Jekyll site:
 
@@ -17,13 +29,25 @@ gem build jekyll-activitypub-static.gemspec
 gem install ./jekyll-activitypub-static-*.gem
 ```
 
-## Usage
-
-Add this to the `_config.yml` for your site:
+Add the plugin to the `_config.yml` for your site:
 
 ```yaml
 plugins:
   - jekyll-activitypub-static
+```
+
+## Usage
+
+Build your site to generate the ActivityPub files:
+
+```sh
+bundle exec jekyll build
+```
+
+To build the site and serve it locally:
+
+```sh
+bundle exec jekyll serve
 ```
 
 ## Configuration
@@ -42,6 +66,7 @@ activitypub:
   summary_property: "description"
   note_max_characters: 500
   update_interval: "P1D"
+  webfinger_output_file: ".well-known/webfinger"
 ```
 
 Available `activitypub` options:
@@ -58,6 +83,9 @@ Available `activitypub` options:
   Note objects. Defaults to `500`.
 - `update_interval`: ActivityPoll polling interval for the generated Actor
   object, as an ISO 8601 duration. Defaults to `P1D`.
+- `webfinger_output_file`: path for the generated WebFinger document. Defaults
+  to `.well-known/webfinger`. GitHub Pages sites can set this to
+  `.well-known/webfinger/index.json` as a workaround for its content type.
 
 ## Articles and Notes
 
