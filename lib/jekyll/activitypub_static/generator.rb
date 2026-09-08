@@ -33,7 +33,7 @@ module Jekyll
       end
 
       def generate_webfinger(site)
-        Jekyll.logger.info LOG_TAG, "Generating .well-known/webfinger"
+        Jekyll.logger.info LOG_TAG, "Generating webfinger endpoint"
 
         url = site.config["url"]
         actor_url = "#{url}/actor.jsonld"
@@ -49,7 +49,10 @@ module Jekyll
           ]
         }
 
-        sf = JsonStaticFile.new(site, ".well-known", "webfinger", webfinger)
+        webfinger_output_file = site.config.dig("activitypub", "webfinger_output_file") || ".well-known/webfinger"
+
+        sf = JsonStaticFile.new(site, File.dirname(webfinger_output_file), File.basename(webfinger_output_file),
+                                webfinger)
         site.static_files << sf
 
         Jekyll.logger.info LOG_TAG, "Added webfinger as #{sf.path}"

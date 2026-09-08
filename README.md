@@ -114,10 +114,22 @@ The `activitypub` path changes when `activitypub.output_path` is configured.
 
 ### WebFinger
 
-The WebFinger document is generated at `.well-known/webfinger` and uses an
-account ID in the form `preferred_username` at the site domain. For example,
-with `url: "https://example.com"` and `preferred_username: "evan"`, the
-account ID is `evan@example.com`.
+The WebFinger document is generated at `.well-known/webfinger` by default and
+uses an account ID in the form `preferred_username` at the site domain. For
+example, with `url: "https://example.com"` and `preferred_username: "evan"`,
+the account ID is `evan@example.com`.
+
+The output path can be configured with `activitypub.webfinger_output_file`.
+For example, GitHub Pages sites can use the following workaround to serve the
+document through an `index.json` file:
+
+```yaml
+activitypub:
+  webfinger_output_file: ".well-known/webfinger/index.json"
+```
+
+GitHub Pages redirects requests for `.well-known/webfinger` to
+`.well-known/webfinger/`, where it serves `index.json`.
 
 WebFinger discovery only works when the generated site is served from the root
 of its domain, because clients request `https://example.com/.well-known/webfinger`.

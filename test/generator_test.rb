@@ -66,6 +66,26 @@ class TestActivityPubStaticGenerator < Minitest::Test
     assert_equal "https://example.com/actor.jsonld", self_link["href"]
   end
 
+  def test_webfinger_file_path_is_configurable
+    destination = File.expand_path("../tmp/_site_webfinger_override", __FILE__)
+    process_site(
+      destination: destination,
+      config: {
+        "activitypub" => {
+          "output_path" => "activitypub",
+          "preferred_username" => "evanp",
+          "webfinger_output_file" => ".well-known/webfinger/index.json"
+        }
+      }
+    )
+
+    path = File.join(destination, ".well-known", "webfinger", "index.json")
+    assert File.exist?(path), "Expected configurable WebFinger output file to be generated"
+
+    data = JSON.parse(File.read(path))
+    assert_equal "acct:evanp@example.com", data["subject"]
+  end
+
   def test_inbox_file_generated
     path = File.join(DEST_DIR, "activitypub", "inbox.jsonld")
     assert File.exist?(path), "Expected inbox.jsonld to be generated"
