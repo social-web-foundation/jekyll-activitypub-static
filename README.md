@@ -12,6 +12,7 @@ A Jekyll plugin that generates a static ActivityPoll feed, the read-only polling
 - [Generated Files](#generated-files)
 - [GitHub Pages](#github-pages)
 - [Example Site](#example-site)
+- [Viewing from the Fediverse](#viewing-from-the-fediverse)
 - [Contributing](#contributing)
 - [License](#license)
 
